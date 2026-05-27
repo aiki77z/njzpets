@@ -9,6 +9,9 @@ on:
 jobs:
   mac:
     runs-on: macos-latest
+    env:
+      # Opt-in early so JS-based actions don't run on deprecated Node 20.
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
     permissions:
       contents: read
     steps:
@@ -18,7 +21,9 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          # Node 20 is being removed from GitHub-hosted runners later in 2026.
+          # Use a supported LTS for the project build.
+          node-version: "22"
           cache: "npm"
 
       - name: Install dependencies
@@ -34,4 +39,3 @@ jobs:
           path: |
             dist/*.dmg
             dist/*.zip
-
